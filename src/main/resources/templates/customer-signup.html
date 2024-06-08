@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Customer Signup</title>
+<link rel="stylesheet" href="/css/customersignup.css">
+</head>
+<body>
+	<div class="container">
+		<h1>Customer Sign-up</h1>
+		<form action="/customer/signup" method="post" th:object="${customer}">
+			<label>Name:</label> 
+			<input type="text" name="name" th:field="*{name}"><span th:errors="*{name}"></span><br> 
+			<label>Address:</label>
+			<textarea rows="5" cols="30" name="address" th:field="*{address}"></textarea>
+			<span th:errors="*{address}"></span><br> 
+			<label>Mobile:</label> 
+			<input type="number" name="mobile" th:field="*{mobile}"><span th:errors="*{mobile}"></span><br> 
+			<label>Email:</label> 
+			<input type="text" name="email" th:field="*{email}"><span th:errors="*{email}"></span><br>
+			<label>Password:</label> 
+			<input type="password" name="password" th:field="*{password}"><span th:errors="*{password}"></span><br>
+			<label>Confirm Password:</label> 
+			<input type="password" name="cpassword" th:field="*{cpassword}"><span th:errors="*{cpassword}"></span><br>
+			<label>Date of Birth:</label> 
+			<input type="date" name="dob" th:field="*{dob}"><span th:errors="*{dob}"></span><br> 
+			<label>Gender:</label>
+			<input type="radio" name="gender" value="male" th:field="*{gender}">Male    
+			<input type="radio" name="gender" value="female" th:field="*{gender}">Female
+			<span th:errors="*{gender}"></span><br>
+			<button>Signup</button>
+		</form>
+	</div>
+</body>
+</html>

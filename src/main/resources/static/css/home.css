@@ -1,0 +1,92 @@
+@charset "UTF-8";
+
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background: #f0f4f8;
+}
+
+nav {
+	background-color: #003366;
+	color: white;
+	padding: 1rem;
+	text-align: center;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+	text-decoration: none;
+	margin: 0 15px;
+}
+
+nav button {
+	background-color: #0066cc;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
+	border-radius: 5px;
+	transition: background-color 0.3s;
+}
+
+nav button:hover {
+	background-color: #004080;
+}
+
+.hero {
+	position: relative;
+	background: url("/images/bluebus.jpeg") no-repeat center center;
+	background-size: cover;
+	color: white;
+	padding: 100px 20px;
+	text-align: center;
+	height: 70vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-image:fill 0 liner-gradient(#0003, #000);
+}
+
+.hero::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: inherit;
+	filter: blur(8px);
+	-webkit-filter: blur(8px);
+	opacity: 0.6;
+	z-index: -1;
+}
+
+.hero-content {
+	position: relative;
+	z-index: 1;
+	height: 110px;
+	width: 800px;
+	padding: 20px;
+	border-radius: 45px;
+	backdrop-filter:blur(20px);
+	box-shadow: 0px 0px 30px rgba(227, 228, 237, 0.37);
+	border: 2px solid rgba(255, 255, 255, 0.18);
+}
+
+.hero h1 {
+	font-size: 3rem;
+	margin: 0;
+}
+
+.hero p {
+	font-size: 1.5rem;
+	margin: 10px 0;
+}
+
+.content {
+	padding: 2rem;
+	max-width: 800px;
+	margin: 0 auto;
+	text-align: center;
+}
