@@ -25,8 +25,8 @@
 			<label>Date of Birth:</label> 
 			<input type="date" name="dob" th:field="*{dob}"><span th:errors="*{dob}"></span><br> 
 			<label>Gender:</label>
-			<input type="radio" name="gender" value="male" th:field="*{gender}">Male    
-			<input type="radio" name="gender" value="female" th:field="*{gender}">Female
+			<input type="radio" name="gender" value="male" th:field="*{gender}" id="male"><label for="male">Male</label>    
+			<input type="radio" name="gender" value="female" th:field="*{gender}" id="female"><label for="female">Female</label>
 			<span th:errors="*{gender}"></span><br>
 			<button>Signup</button>
 		</form>

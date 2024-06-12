@@ -5,12 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bluebus.bus_project.dto.Agency;
 import com.bluebus.bus_project.service.Agency_Service;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -30,7 +33,28 @@ public class Agency_Controller {
 	}
 
 	@PostMapping("/signup")
-	public String signup(@Valid Agency agency, BindingResult result) {
-		return agencyService.signup(agency, result);
+	public String signup(@Valid Agency agency, BindingResult result, HttpSession session) {
+		return agencyService.signup(agency, result, session);
+	}
+
+	@GetMapping("/send-otp/{id}")
+	public String loadOtpPage(@PathVariable int id, ModelMap map) {
+		map.put("id", id);
+		return "agency-otp";
+	}
+
+	@PostMapping("/verify-otp")
+	public String verifyOtp(@RequestParam int id, @RequestParam int otp, HttpSession session) {
+		return agencyService.verifyOtp(id, otp, session);
+	}
+
+	@GetMapping("/login")
+	public String login() {
+		return "agency-login.html";
+	}
+
+	@GetMapping("/resend-otp/{id}")
+	public String resendOtp(@PathVariable int id, HttpSession session) {
+		return agencyService.resendOtp(id, session);
 	}
 }

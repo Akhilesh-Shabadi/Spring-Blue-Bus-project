@@ -6,8 +6,11 @@ import com.bluebus.bus_project.dto.Agency;
 
 public interface Agency_Repository extends JpaRepository<Agency, Integer> {
 
-	boolean existsByEmail(String email);
+	boolean existsByEmailAndStatusTrue(String email);
 
-	boolean existsByMobile(long mobile);
+	boolean existsByMobileAndStatusTrue(long mobile);
 
+	Agency findByEmail(String email);
+
+	Agency findByMobile(long mobile);
 }

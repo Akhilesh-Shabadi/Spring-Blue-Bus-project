@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div>
+		<h3 th:text="${session.successMessage}"></h3>
+		<h3 th:text="${session.failMessage}"></h3>
+		<th:block th:text="${@sessionMessageRemover.removeSessionMessage()}"></th:block>
+	</div>
+	<form action="/customer/verify-otp" method="post">
+		Enter Otp:<input type="number" name="otp"> <input
+			type="hidden" name="id" th:value="${id}">
+		<button>submit</button>
+	</form>
+	<a th:href="'/customer/resend-otp/'+${id}">Resend Otp</a>
+</body>
+</html>

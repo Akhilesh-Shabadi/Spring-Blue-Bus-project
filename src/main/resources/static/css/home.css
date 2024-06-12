@@ -38,28 +38,13 @@ nav button:hover {
 	position: relative;
 	background: url("/images/bluebus.jpeg") no-repeat center center;
 	background-size: cover;
-	color: white;
+	color:white;
 	padding: 100px 20px;
 	text-align: center;
 	height: 70vh;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	border-image:fill 0 liner-gradient(#0003, #000);
-}
-
-.hero::before {
-	content: "";
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: inherit;
-	filter: blur(8px);
-	-webkit-filter: blur(8px);
-	opacity: 0.6;
-	z-index: -1;
 }
 
 .hero-content {

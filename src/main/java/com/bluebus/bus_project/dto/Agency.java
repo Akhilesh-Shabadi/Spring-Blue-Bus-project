@@ -39,4 +39,6 @@ public class Agency {
 	private String cpassword;
 	private String reg_no;
 	private String pan_no;
+	private int otp;
+	private boolean status;
 }

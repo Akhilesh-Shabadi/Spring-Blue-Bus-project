@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Agency Login</title>
+</head>
+<body>
+	<div>
+		<h3 th:text="${session.successMessage}"></h3>
+		<h3 th:text="${session.failMessage}"></h3>
+		<th:block th:text="${@sessionMessageRemover.removeSessionMessage()}"></th:block>
+	</div>
+	<h1>Agency Login</h1>
+</body>
+</html>

@@ -2,7 +2,6 @@
 
 body {
 	font-family: Arial, sans-serif;
-	background: linear-gradient(to right, #6a11cb, #2575fc);
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -11,6 +10,12 @@ body {
 
 .container {	
 	text-align: center;
+	background: linear-gradient(to right, #6a11cb, #2575fc);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 10px 10px 25px ;
+    max-width: 500px;
+    width: 100%;
 }
 
 h1 {
@@ -31,15 +36,17 @@ input[type="text"], input[type="number"], input[type="password"], input[type="da
 	textarea {
 	width: 400px;
 	padding: 10px;
-	margin-bottom: 10px;
+	margin-bottom: 25px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	box-sizing: border-box;
 	font-size: 1rem;
 }
 
-input[type="radio"] {
-	margin-right: 10px;
+input[type="redio"], label[for="male"], label[for="female"]{
+	margin-right:20px;
+	margin:7px;
+	display: inline-block;
 }
 
 span {
@@ -63,7 +70,7 @@ button {
 	width: 60%;
 	position: relative;
 	top: 20px;
-	left: 89px;
+	left: 94px;
 }
 
 button:hover {

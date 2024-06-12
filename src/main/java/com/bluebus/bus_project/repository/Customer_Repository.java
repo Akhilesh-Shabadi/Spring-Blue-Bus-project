@@ -6,8 +6,11 @@ import com.bluebus.bus_project.dto.Customer;
 
 public interface Customer_Repository extends JpaRepository<Customer, Integer> {
 
-	boolean existsByEmail(String email);
+	boolean existsByEmailAndStatusTrue(String email);
 
-	boolean existsByMobile(long mobile);
+	boolean existsByMobileAndStatusTrue(long mobile);
 
+	Customer findByEmail(String email);
+
+	Customer findByMobile(long mobile);
 }

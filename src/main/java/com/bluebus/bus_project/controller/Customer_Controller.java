@@ -5,11 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bluebus.bus_project.dto.Customer;
+import com.bluebus.bus_project.service.Customer_Service;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -18,6 +22,9 @@ public class Customer_Controller {
 	@Autowired
 	Customer customer;
 
+	@Autowired
+	Customer_Service customer_Service;
+
 	@GetMapping("/signup")
 	public String loadSignup(ModelMap map) {
 		map.put("customer", customer);
@@ -25,10 +32,28 @@ public class Customer_Controller {
 	}
 
 	@PostMapping("/signup")
-	public String signup(@Valid Customer customer, BindingResult result) {
-		if (result.hasErrors())
-			return "customer-signup.html";
-		else
-			return "home.html";
+	public String signup(@Valid Customer customer, BindingResult result, HttpSession session) {
+		return customer_Service.signup(customer, result, session);
+	}
+
+	@GetMapping("/send-otp/{id}")
+	public String loadOtpPage(@PathVariable int id, ModelMap map) {
+		map.put("id", id);
+		return "customer-otp";
+	}
+
+	@PostMapping("/verify-otp")
+	public String verifyOtp(@RequestParam int id, @RequestParam int otp, HttpSession session) {
+		return customer_Service.verifyOtp(id, otp, session);
+	}
+
+	@GetMapping("/login")
+	public String login() {
+		return "customer-login";
+	}
+
+	@GetMapping("/resend-otp/{id}")
+	public String resendOtp(@PathVariable int id, HttpSession session) {
+		return customer_Service.resendOtp(id, session);
 	}
 }

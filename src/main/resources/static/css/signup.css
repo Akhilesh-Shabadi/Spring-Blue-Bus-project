@@ -23,12 +23,20 @@ body {
 	border: 2px solid rgba(255, 255, 255, 0.18);
 }
 
+#float{
+	position:relative;
+	left:130px;
+	width:50%;
+	text-align: left;
+	margin-bottom: 10px;
+}
+
 label {
 	font-size: 1.2rem;
 	margin-bottom: 10px;
 }
 
-input[type="radio"] {
+input {
 	margin: 10px 10px 20px;
 	font-weight: bolder;
 }

@@ -42,4 +42,6 @@ public class Customer {
 	private LocalDate dob;
 	@NotEmpty(message = "* this is Required field")
 	private String gender;
+	private int otp;
+	private boolean status;
 }
