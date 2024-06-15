@@ -3,33 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <title>Customer Signup</title>
+<th:block th:insert="~{fragments/header.html}"></th:block>
 <link rel="stylesheet" href="/css/customersignup.css">
 </head>
 <body>
+	<div>
+		<th:block th:insert="~{fragments/navbar.html}"></th:block>
+		<th:block th:insert="~{fragments/message.html}"></th:block>
+	</div>
 	<div class="container">
 		<h1>Customer Sign-up</h1>
 		<form action="/customer/signup" method="post" th:object="${customer}">
-			<label>Name:</label> 
-			<input type="text" name="name" th:field="*{name}"><span th:errors="*{name}"></span><br> 
-			<label>Address:</label>
-			<textarea rows="5" cols="30" name="address" th:field="*{address}"></textarea>
+			<label for="name">Name:</label> 
+			<input type="text" name="name" th:field="*{name}" id="name"><span th:errors="*{name}"></span><br> 
+			<label for="address">Address:</label>
+			<textarea rows="2" cols="30" name="address" th:field="*{address}" id="address"></textarea>
 			<span th:errors="*{address}"></span><br> 
-			<label>Mobile:</label> 
-			<input type="number" name="mobile" th:field="*{mobile}"><span th:errors="*{mobile}"></span><br> 
-			<label>Email:</label> 
-			<input type="text" name="email" th:field="*{email}"><span th:errors="*{email}"></span><br>
-			<label>Password:</label> 
-			<input type="password" name="password" th:field="*{password}"><span th:errors="*{password}"></span><br>
-			<label>Confirm Password:</label> 
-			<input type="password" name="cpassword" th:field="*{cpassword}"><span th:errors="*{cpassword}"></span><br>
-			<label>Date of Birth:</label> 
-			<input type="date" name="dob" th:field="*{dob}"><span th:errors="*{dob}"></span><br> 
+			<label for="mobile">Mobile:</label> 
+			<input type="number" name="mobile" th:field="*{mobile}" id="mobile"><span th:errors="*{mobile}"></span><br> 
+			<label for="email">Email:</label> 
+			<input type="text" name="email" th:field="*{email}" id="email"><span th:errors="*{email}"></span><br>
+			<label for="password">Password:</label> 
+			<input type="password" name="password" th:field="*{password}" id="password"><span th:errors="*{password}"></span><br>
+			<label for="confirmpassword">Confirm Password:</label> 
+			<input type="password" name="cpassword" th:field="*{cpassword}" id="confirmpassword"><span th:errors="*{cpassword}"></span><br>
+			<label for="dob">Date of Birth:</label> 
+			<input type="date" name="dob" th:field="*{dob}" id="dob"><span th:errors="*{dob}"></span><br> 
 			<label>Gender:</label>
 			<input type="radio" name="gender" value="male" th:field="*{gender}" id="male"><label for="male">Male</label>    
 			<input type="radio" name="gender" value="female" th:field="*{gender}" id="female"><label for="female">Female</label>
 			<span th:errors="*{gender}"></span><br>
+			<a href="/" class="btn btn-secondary">Back</a>
 			<button>Signup</button>
 		</form>
 	</div>
+	<th:block th:insert="~{fragments/footer.html}"></th:block>
 </body>
 </html>

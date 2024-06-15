@@ -1,0 +1,20 @@
+footer {
+    background-color: #003366; /* Dark blue background */
+    color: white; /* White text color */
+    padding: 1rem; /* Padding around the footer */
+    text-align: center; /* Center the text */
+    position: fixed; /* Fix the footer at the bottom */
+    bottom: 0; /* Align the footer to the bottom */
+    width: 100%; /* Make the footer span the entire width */
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    font-size: 1rem; /* Standard font size */
+}
+
+footer a {
+    color: white; /* White color for links */
+    text-decoration: none; /* Remove underline from links */
+}
+
+footer a:hover {
+    text-decoration: underline; /* Underline links on hover */
+}

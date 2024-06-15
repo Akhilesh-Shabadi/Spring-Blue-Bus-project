@@ -47,11 +47,6 @@ public class Customer_Controller {
 		return customer_Service.verifyOtp(id, otp, session);
 	}
 
-	@GetMapping("/login")
-	public String login() {
-		return "customer-login";
-	}
-
 	@GetMapping("/resend-otp/{id}")
 	public String resendOtp(@PathVariable int id, HttpSession session) {
 		return customer_Service.resendOtp(id, session);

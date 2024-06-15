@@ -32,12 +32,15 @@ public class Agency {
 	@NotEmpty(message = "* this is Required field")
 	@Email(message = "* Enter Proper Email")
 	private String email;
+	@NotEmpty(message = "* this is Required field")
 	private String gst_no;
 	@Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", message = "* Password should contain minimum 8 chareecter, inlcude one upper case, lowercase , number and special charecter")
 	private String password;
 	@Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", message = "* Password should contain minimum 8 chareecter, inlcude one upper case, lowercase , number and special charecter")
 	private String cpassword;
+	@NotEmpty(message = "* this is Required field")
 	private String reg_no;
+	@NotEmpty(message = "* this is Required field")
 	private String pan_no;
 	private int otp;
 	private boolean status;

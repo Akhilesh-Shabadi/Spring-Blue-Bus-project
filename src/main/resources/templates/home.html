@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Blue Bus</title>
+<th:block th:insert="~{fragments/header.html}"></th:block>
 <link rel="stylesheet" href="/css/home.css">
 </head>
 <body>
-	<nav>
-		<a href="/signup"><button>Signup</button></a> 
-		<a href="/login"><button>Login</button></a>
-	</nav>
+	<div>
+		<th:block th:insert="~{fragments/navbar.html}"></th:block>
+		<th:block th:insert="~{fragments/message.html}"></th:block>
+	</div>
 	<div class="hero">
 		<div class="hero-content">
 			<h1>Welcome to Blue Bus</h1>
@@ -26,5 +27,6 @@
 			and various payment options to make your travel hassle-free. Book
 			your next trip with Blue Bus and enjoy a comfortable journey.</p>
 	</div>
+	<th:block th:insert="~{fragments/footer.html}"></th:block>
 </body>
 </html>

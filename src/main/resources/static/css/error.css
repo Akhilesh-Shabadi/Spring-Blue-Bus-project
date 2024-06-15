@@ -1,0 +1,45 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #6a11cb, #2575fc); /* Linear gradient background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+.error-container {
+    background: rgba(255, 255, 255, 0.9); /* White with transparency */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+.error-container h1 {
+    color: #d9534f; /* Red color for error message */
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.error-container p {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.error-container a {
+    color: #0066cc; /* Blue color for link */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.error-container a:hover {
+    color: #004080; /* Darker blue on hover */
+    text-decoration: underline; /* Underline on hover */
+}

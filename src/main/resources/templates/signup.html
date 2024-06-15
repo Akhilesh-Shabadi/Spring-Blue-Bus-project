@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Signup</title>
+<th:block th:insert="~{fragments/header.html}"></th:block>
 <link rel="stylesheet" href="/css/signup.css">
 </head>
 <body>
+	<div>
+       <th:block th:insert="~{fragments/navbar.html}"></th:block>
+       <th:block th:insert="~{fragments/message.html}"></th:block>
+    </div>
 	<div class="container">
 		<form action="/signup" method="post">
 			<h1>Sign-up as</h1>
@@ -13,8 +18,10 @@
 				<input type="radio" name="role" value="customer" id="customer"><label for="customer">CUSTOMER</label> <br> 
 				<input type="radio" name="role" value="agency" id="agency"><label for="agency">AGENCY</label><br>
 			</div>
+			<a href="/" class="btn btn-secondary">Back</a>
 			<button>Select</button>
 		</form>
 	</div>
+	<th:block th:insert="~{fragments/footer.html}"></th:block>
 </body>
 </html>

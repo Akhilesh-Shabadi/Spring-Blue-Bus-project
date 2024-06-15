@@ -58,7 +58,7 @@ public class Customer_Service {
 			customer.setStatus(true);
 			customer_Dao.save(customer);
 			session.setAttribute("successMessage", "Otp Verified Success, You can Lgin Now");
-			return "redirect:/customer/login";
+			return "redirect:/login";
 		} else {
 			session.setAttribute("failMessage", "Invalid Otp, Try Again");
 			return "redirect:/customer/send-otp/" + customer.getId() + "";

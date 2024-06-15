@@ -3,33 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <title>Agency signup</title>
+<th:block th:insert="~{fragments/header.html}"></th:block>
 <link rel="stylesheet" href="/css/agencysignup.css">
 </head>
 <body>
-<div align="center">
+	<div>
+		<th:block th:insert="~{fragments/navbar.html}"></th:block>
+		<th:block th:insert="~{fragments/message.html}"></th:block>
+	</div>
+	<div align="center" class="container">
 		<h1>Agency Sign-up</h1>
 		<form action="/agency/signup" method="post" th:object="${agency}">
-			<label>Name:</label> 
-			<input type="text" name="name" th:field="*{name}"><span th:errors="*{name}"></span><br>
-			<label>Address:</label>
-			<textarea rows="5" cols="30" name="address" th:field="*{address}"></textarea>
+			<label for="name">Name:</label> 
+			<input type="text" name="name" th:field="*{name}" id="name"><span th:errors="*{name}"></span><br>
+			<label for="address">Address:</label>
+			<textarea rows="2" cols="30" name="address" th:field="*{address}" id="address"></textarea>
 			<span th:errors="*{address}"></span><br> 
-			<label>Mobile:</label> 
-			<input type="number" name="mobile" th:field="*{mobile}"><span th:errors="*{mobile}"></span><br> 
-			<label>Email:</label> 
-			<input type="text" name="email" th:field="*{email}"><span th:errors="*{email}"></span><br>
-			<label>GST No:</label> 
-			<input type="text" name="gst_no" th:field="*{gst_no}"><span th:errors="*{gst_no}"></span><br> 
-			<label>Password:</label> 
-			<input type="password" name="password" th:field="*{password}"><span th:errors="*{password}"></span><br> 
-			<label>Confirm Password:</label> 
-			<input type="password" name="cpassword" th:field="*{cpassword}"><span th:errors="*{cpassword}"></span><br> 
-			<label>Registration Number:</label> 
-			<input type="text" name="reg_no" th:field="*{reg_no}"><span th:errors="*{reg_no}"></span><br> 
-			<label>Pan Number:</label> 
-			<input type="text" name="pan_no" th:field="*{pan_no}"><span th:errors="*{pan_no}"></span><br>
+			<label for="mobile">Mobile:</label> 
+			<input type="number" name="mobile" th:field="*{mobile}" id="mobile"><span th:errors="*{mobile}"></span><br> 
+			<label for="email">Email:</label> 
+			<input type="text" name="email" th:field="*{email}" id="email"><span th:errors="*{email}"></span><br>
+			<label for="gstno">GST No:</label> 
+			<input type="text" name="gst_no" th:field="*{gst_no}" id="gstno"><span th:errors="*{gst_no}"></span><br> 
+			<label for="password">Password:</label> 
+			<input type="password" name="password" th:field="*{password}" id="password"><span th:errors="*{password}"></span><br> 
+			<label for="confirmpassword">Confirm Password:</label> 
+			<input type="password" name="cpassword" th:field="*{cpassword}" id="confirmpassword"><span th:errors="*{cpassword}"></span><br> 
+			<label for="regno">Registration Number:</label> 
+			<input type="text" name="reg_no" th:field="*{reg_no}" id="regno"><span th:errors="*{reg_no}"></span><br> 
+			<label for="panno">Pan Number:</label> 
+			<input type="text" name="pan_no" th:field="*{pan_no}" id="panno"><span th:errors="*{pan_no}"></span><br>
+			<a href="/" class="btn btn-secondary">Back</a>
 			<button type="submit">Sign-up</button>
 		</form>
 	</div>
+	<th:block th:insert="~{fragments/footer.html}"></th:block>
 </body>
 </html>

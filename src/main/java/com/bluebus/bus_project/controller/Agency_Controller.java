@@ -48,11 +48,6 @@ public class Agency_Controller {
 		return agencyService.verifyOtp(id, otp, session);
 	}
 
-	@GetMapping("/login")
-	public String login() {
-		return "agency-login.html";
-	}
-
 	@GetMapping("/resend-otp/{id}")
 	public String resendOtp(@PathVariable int id, HttpSession session) {
 		return agencyService.resendOtp(id, session);

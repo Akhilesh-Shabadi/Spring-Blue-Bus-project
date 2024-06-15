@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<th:block th:insert="~{fragments/header.html}"></th:block>
+<link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+	<div>
+		<th:block th:insert="~{fragments/navbar.html}"></th:block>
+		<th:block th:insert="~{fragments/message.html}"></th:block>
+	</div>
+    <div class="container">
+        <h1>Login</h1>
+        <form action="/login" method="post">
+            <label for="email/phone">Email/Phone</label>
+            <input type="text" placeholder="email/phone" name="email-phone" id="email/phone">
+            <label for="password">Password</label>
+            <input type="password" placeholder="password" name="password" id="password">
+            <a href="/" class="btn btn-secondary">Back</a>
+            <button>Login</button>
+        </form>
+    </div>
+    <th:block th:insert="~{fragments/footer.html}"></th:block>
+</body>
+</html>

@@ -2,19 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Customer OTP</title>
+<th:block th:insert="~{fragments/header.html}"></th:block>
+<link rel="stylesheet" href="/css/customer-otp.css">
 </head>
 <body>
 	<div>
-		<h3 th:text="${session.successMessage}"></h3>
-		<h3 th:text="${session.failMessage}"></h3>
-		<th:block th:text="${@sessionMessageRemover.removeSessionMessage()}"></th:block>
+		<th:block th:insert="~{fragments/navbar.html}"></th:block>
+		<th:block th:insert="~{fragments/message.html}"></th:block>
 	</div>
-	<form action="/customer/verify-otp" method="post">
-		Enter Otp:<input type="number" name="otp"> <input
-			type="hidden" name="id" th:value="${id}">
-		<button>submit</button>
-	</form>
-	<a th:href="'/customer/resend-otp/'+${id}">Resend Otp</a>
+    <div class="container">
+        <form action="/customer/verify-otp" method="post">
+            <label for="enterotp">Enter OTP:</label>
+            <input type="number" name="otp" placeholder="Enter OTP" id="enterotp">
+            <input type="hidden" name="id" th:value="${id}">
+            <button>Submit</button>
+        </form>
+        <a th:href="'/customer/resend-otp/'+${id}">Resend OTP</a>
+    </div>
+    <th:block th:insert="~{fragments/footer.html}"></th:block>
 </body>
 </html>
