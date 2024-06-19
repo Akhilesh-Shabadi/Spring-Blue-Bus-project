@@ -43,7 +43,7 @@ public class Common_Service {
 			return "redirect:/login";
 		} else {
 			if (customer == null) {
-				if (AES.decrypt(agency.getPassword(), "123").equals(password)) {
+				if (AES.decrypt(agency.getPassword(), "password").equals(password)) {
 					session.setAttribute("agency", agency);
 					session.setAttribute("successMessage", "Login Success");
 					return "redirect:/";
@@ -52,7 +52,7 @@ public class Common_Service {
 					return "redirect:/login";
 				}
 			} else {
-				if (AES.decrypt(customer.getPassword(), "123").equals(password)) {
+				if (AES.decrypt(customer.getPassword(), "password").equals(password)) {
 					session.setAttribute("customer", customer);
 					session.setAttribute("successMessage", "Login Success");
 					return "redirect:/";

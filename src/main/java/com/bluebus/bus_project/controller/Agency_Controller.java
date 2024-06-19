@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bluebus.bus_project.dto.Agency;
+import com.bluebus.bus_project.dto.Bus;
 import com.bluebus.bus_project.service.Agency_Service;
 
 import jakarta.servlet.http.HttpSession;
@@ -51,5 +53,15 @@ public class Agency_Controller {
 	@GetMapping("/resend-otp/{id}")
 	public String resendOtp(@PathVariable int id, HttpSession session) {
 		return agencyService.resendOtp(id, session);
+	}
+
+	@GetMapping("/add-bus")
+	public String addbus() {
+		return "addbus";
+	}
+
+	@PostMapping("/add-bus")
+	public String addbus(Bus bus, @RequestParam MultipartFile image, HttpSession session) {
+		return agencyService.addBus(bus, image, session);
 	}
 }

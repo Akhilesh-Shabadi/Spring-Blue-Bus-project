@@ -1,14 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<th:block th:insert="~{fragments/header.html}"></th:block>
+<link rel="stylesheet" href="/css/add-bus.css">
 </head>
 <body>
 	<div>
-		<form action="/addbus">
-			
+		<th:block th:insert="~{fragments/navbar.html}"></th:block>
+		<th:block th:insert="~{fragments/message.html}"></th:block>
+	</div>
+	<div class="container">
+		<form action="/agency/add-bus" method="post" enctype="multipart/form-data">
+			<div class="form-addbus">
+				<label for="name">Bus Name</label>
+				<input type="text" name="name" id="name" placeholder="Enter Bus Name">
+			</div>
+			<label>Bus type</label>
+			<div class="form-addbus">
+				<input type="radio" name="ac" value="true" id="ac"><label for="ac">AC</label>
+				<input type="radio" name="ac" value="false" id="nonac"><label for="nonac">NON-AC</label>
+			</div>
+			<div class="form-addbus">
+				<input type="radio" name="sleeper" value="true" id="acsleeper" ><label for="acsleeper">SLEEPER</label>
+				<input type="radio" name="sleeper" value="false" id="nonsleeper"><label for="nonsleeper">NON-SLEEPER</label>
+			</div>
+			<div class="form-addbus">
+				<label for="noseats">Enter Number of seats</label>
+				<input type="number" name="seat" placeholder="Enter number of seats" id="noseats" required="required">
+			</div>
+			<div class="form-addbus">
+				<label for="regno">Registration number</label>
+				<input type="text"  placeholder="KA28AK4444" name="regno" required="required">
+			</div>
+			<div class="form-addbus">
+				<label for="image">Image</label>
+				<input type="file" name="image" required="required">
+			</div>
+			<a href="/"><button type="button">Back</button></a>
+			<button>ADD</button>
 		</form>
 	</div>
+	<th:block th:insert="~{fragments/footer.html}"></th:block>
 </body>
 </html>
