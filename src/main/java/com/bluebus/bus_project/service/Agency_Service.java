@@ -2,11 +2,14 @@ package com.bluebus.bus_project.service;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,8 +17,11 @@ import com.bluebus.bus_project.dao.Agency_Dao;
 import com.bluebus.bus_project.dao.Customer_Dao;
 import com.bluebus.bus_project.dto.Agency;
 import com.bluebus.bus_project.dto.Bus;
+import com.bluebus.bus_project.dto.Route;
 import com.bluebus.bus_project.helper.AES;
 import com.bluebus.bus_project.helper.MailSending;
+import com.bluebus.bus_project.repository.Bus_Repository;
+import com.bluebus.bus_project.repository.Route_Repository;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
@@ -32,6 +38,12 @@ public class Agency_Service {
 	@Autowired
 	MailSending mailSending;
 
+	@Autowired
+	Bus_Repository busRepository;
+
+	@Autowired
+	Route_Repository routeRepository;
+
 	public String signup(Agency agency, BindingResult result, HttpSession session) {
 		if (!agency.getPassword().equals(agency.getCpassword()))
 			result.rejectValue("cpassword", "error.cpassword", "* Password and Confirm Password Should be Matching");
@@ -43,7 +55,7 @@ public class Agency_Service {
 			return "agency-signup";
 		else {
 			agencyDao.deleteIfExists(agency);
-//			agency.setCpassword(AES.encrypt(agency.getCpassword(), "password"));
+			agency.setCpassword(AES.encrypt(agency.getCpassword(), "password"));
 			agency.setPassword(AES.encrypt(agency.getPassword(), "password"));
 			agency.setOtp(new Random().nextInt(100000, 1000000));
 			if (mailSending.sendEmail(agency)) {
@@ -110,5 +122,54 @@ public class Agency_Service {
 			e.printStackTrace();
 		}
 		return (String) resume.get("url");
+	}
+
+	public String addRoute(HttpSession session, ModelMap map) {
+		Agency agency = (Agency) session.getAttribute("agency");
+		if (agency == null) {
+			session.setAttribute("failMessage", "Invalid Session");
+			return "redirect:/";
+		} else {
+			List<Bus> buses = agency.getBuses();
+			if (buses.isEmpty()) {
+				session.setAttribute("failMessage", "First Add a Bus");
+				return "redirect:/";
+			} else {
+				map.put("buses", buses);
+				return "add-route.html";
+			}
+		}
+	}
+
+	public String addRoute(Route route, HttpSession session) {
+		Agency agency = (Agency) session.getAttribute("agency");
+		if (agency == null) {
+			session.setAttribute("failMessage", "Invalid Session");
+			return "redirect:/";
+		} else {
+			route.setBus(busRepository.findById(route.getBus().getId()).orElse(null));
+			routeRepository.save(route);
+			session.setAttribute("successMessage", "Route Added Success");
+			return "redirect:/";
+		}
+	}
+
+	public String fetchRoutes(HttpSession session, ModelMap map) {
+		Agency agency = (Agency) session.getAttribute("agency");
+		if (agency == null) {
+			session.setAttribute("failMessage", "Invalid Session");
+			return "redirect:/";
+		} else {
+			List<Bus> buses = agency.getBuses();
+			if (buses.isEmpty()) {
+				session.setAttribute("failMessage", "No Routes Added Yet");
+				return "redirect:/";
+			} else {
+				List<Integer> list = buses.stream().mapToInt(x -> x.getId()).boxed().collect(Collectors.toList());
+				List<Route> routes = routeRepository.findByBus_idIn(list);
+				map.put("routes", routes);
+				return "fetch-routes.html";
+			}
+		}
 	}
 }

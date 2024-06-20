@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bluebus.bus_project.dto.Agency;
 import com.bluebus.bus_project.dto.Bus;
+import com.bluebus.bus_project.dto.Route;
 import com.bluebus.bus_project.service.Agency_Service;
 
 import jakarta.servlet.http.HttpSession;
@@ -63,5 +64,20 @@ public class Agency_Controller {
 	@PostMapping("/add-bus")
 	public String addbus(Bus bus, @RequestParam MultipartFile image, HttpSession session) {
 		return agencyService.addBus(bus, image, session);
+	}
+	
+	@GetMapping("/add-route")
+	public String addRoute(HttpSession session, ModelMap map) {
+		return agencyService.addRoute(session, map);
+	}
+
+	@PostMapping("/add-route")
+	public String addRoute(Route route, HttpSession session) {
+		return agencyService.addRoute(route, session);
+	}
+
+	@GetMapping("/manage-route")
+	public String manageRoute(HttpSession session, ModelMap map) {
+		return agencyService.fetchRoutes(session, map);
 	}
 }
