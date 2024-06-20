@@ -80,4 +80,14 @@ public class Agency_Controller {
 	public String manageRoute(HttpSession session, ModelMap map) {
 		return agencyService.fetchRoutes(session, map);
 	}
+	
+	@GetMapping("/delete-route/{id}")
+	public String deleteRoute(@PathVariable int id, HttpSession session) {
+		return agencyService.deleteRoute(id, session);
+	}
+	
+	@GetMapping("/edit-route/{id}")
+	public String editRoute(@PathVariable int id, HttpSession session,ModelMap map) {
+		return agencyService.editRoute(id, session,map);
+	}
 }

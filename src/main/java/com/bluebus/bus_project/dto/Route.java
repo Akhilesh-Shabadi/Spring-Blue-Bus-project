@@ -22,6 +22,9 @@ public class Route {
 	@ManyToOne
 	Bus bus;
 
+	@ManyToOne
+	Agency agency;
+
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	List<Station> stations;
 
