@@ -1,13 +1,28 @@
 package com.bluebus.bus_project.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import com.bluebus.bus_project.dao.Agency_Dao;
 import com.bluebus.bus_project.dao.Customer_Dao;
 import com.bluebus.bus_project.dto.Agency;
 import com.bluebus.bus_project.dto.Customer;
+import com.bluebus.bus_project.dto.Route;
+import com.bluebus.bus_project.dto.Station;
+import com.bluebus.bus_project.dto.TripOrder;
 import com.bluebus.bus_project.helper.AES;
+import com.bluebus.bus_project.helper.Calculator;
+import com.bluebus.bus_project.repository.Route_Repository;
+import com.bluebus.bus_project.repository.Station_Repository;
+import com.razorpay.Order;
+import com.razorpay.RazorpayClient;
+import com.razorpay.RazorpayException;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -18,6 +33,15 @@ public class Common_Service {
 
 	@Autowired
 	Agency_Dao agency_Dao;
+
+	@Autowired
+	Station_Repository stationRepository;
+
+	@Autowired
+	Route_Repository routeRepository;
+
+	@Autowired
+	Calculator calculator;
 
 	public String signup(String role) {
 		if (role.equals("customer"))
@@ -62,6 +86,131 @@ public class Common_Service {
 				}
 			}
 		}
+	}
 
+	public String bookbus(String from, String to, LocalDate date, HttpSession httpSession, ModelMap map) {
+		System.out.println(date.getDayOfWeek().toString().toLowerCase());
+		return null;
+	}
+
+	public String searchBus(String from, String to, LocalDate date, HttpSession session, ModelMap map) {
+		if (!from.equalsIgnoreCase(to)) {
+			if (date.isAfter(LocalDate.now())) {
+				String day = date.getDayOfWeek().toString().toLowerCase();
+				List<Route> routes = new ArrayList<Route>();
+
+				List<Station> fromStations = stationRepository.findByName(from);
+				List<Station> toStations = stationRepository.findByName(to);
+
+				for (Station from1 : fromStations) {
+					for (Station to1 : toStations) {
+						if (from1.getRoute().getId() == to1.getRoute().getId()) {
+							Route route = from1.getRoute();
+							if (route.getStations().indexOf(from1) < route.getStations().indexOf(to1)
+									|| route.getStations().indexOf(to1) == 1) {
+								switch (day) {
+								case "monday": {
+									if (route.isMonday())
+										routes.add(route);
+									break;
+								}
+								case "tuesday": {
+									if (route.isTuesday())
+										routes.add(route);
+									break;
+								}
+								case "wednesday": {
+									if (route.isWednesday())
+										routes.add(route);
+									break;
+								}
+								case "thursday": {
+									if (route.isThursday())
+										routes.add(route);
+									break;
+								}
+								case "friday": {
+									if (route.isFriday())
+										routes.add(route);
+								}
+								case "saturday": {
+									if (route.isSaturday())
+										routes.add(route);
+									break;
+								}
+								case "sunday": {
+									if (route.isSunday())
+										routes.add(route);
+									break;
+								}
+
+								default:
+									throw new IllegalArgumentException("Unexpected value: " + day);
+								}
+							}
+						}
+					}
+				}
+
+				if (routes.isEmpty()) {
+					session.setAttribute("failMessage", "No Bus Found");
+					return "redirect:/bookbus";
+				} else {
+					map.put("from", from);
+					map.put("to", to);
+					map.put("routes", routes);
+					return "view-routes";
+				}
+			} else {
+				session.setAttribute("failMessage", "Enter Properly");
+				return "redirect:/bookbus";
+			}
+
+		} else {
+			session.setAttribute("failMessage", "Enter Properly");
+			return "redirect:/bookbus";
+		}
+	}
+
+	public String bookTicket(String from, String to, int routeId, HttpSession session, ModelMap map) {
+		Customer customer = (Customer) session.getAttribute("customer");
+		if (customer == null) {
+			session.setAttribute("failMessage", "First Login to Book");
+			return "redirect:/customer/login";
+		} else {
+			Route route = routeRepository.findById(routeId).orElseThrow();
+			double price = calculator.calculatePrice(from, to, route);
+			RazorpayClient razorpay = null;
+			try {
+				razorpay = new RazorpayClient("rzp_test_f4vcAPoh0RDZf", "jjblWSJ6F7NJuPUOtNmDjg4i");
+				JSONObject orderRequest = new JSONObject();
+				orderRequest.put("amount", price * 100);
+				orderRequest.put("currency", "INR");
+
+				Order order = razorpay.orders.create(orderRequest);
+
+				TripOrder tripOrder = new TripOrder();
+				tripOrder.setFrom(from);
+				tripOrder.setTo(to);
+				tripOrder.setAmount(price);
+				tripOrder.setBookingDate(LocalDate.now());
+				tripOrder.setArrivalTime(calculator.timeCalculator(to, route));
+				tripOrder.setDepartureTime(calculator.timeCalculator(from, route));
+				tripOrder.setOrderId(order.get("id"));
+
+				customer.getTripOrders().add(tripOrder);
+				customer_Dao.save(customer);
+
+				map.put("tripOrder", tripOrder);
+				map.put("key", "rzp_test_f4vcAPoh0RDZf");
+				map.put("customer", customer);
+				session.setAttribute("successMessage", "Check Details and Do Payment");
+				return "razorpay";
+
+			} catch (RazorpayException e) {
+				session.setAttribute("failMessage", "Payment Failed");
+				return "redirect:/";
+			}
+		}
 	}
 }

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>BlueBus-View Routes</title>
+<th:block th:insert="~{fragments/header.html}"></th:block>
+<link rel="stylesheet" href="/css/view-routes.css">
+</head>
+<body>
+	<div>
+		<th:block th:insert="~{fragments/navbar.html}"></th:block>
+		<th:block th:insert="~{fragments/message.html}"></th:block>
+	</div>
+	<div class="container">
+		<div class="card" th:each="route:${routes}">
+
+			<img th:alt="${route.bus.name}" th:src="${route.bus.imageLink}"
+				height="150px" width="150px">
+			<h3 th:text="${route.bus.name}"></h3>
+			<h4 th:text="'From: '+${from}"></h4>
+			<h4 th:text="'To: '+${to}"></h4>
+
+			<th:block th:each="station : ${route.stations}">
+				<th:block th:if="${station.name == from}">
+					<h4 th:text="'Departure Time ' + ${station.time}"></h4>
+				</th:block>
+				<th:block th:if="${station.name == to}">
+					<h4 th:text="'Arrival Time: ' + ${station.time}"></h4>
+				</th:block>
+			</th:block>
+			<h5
+				th:text="'Ticket Price: '+${@calculator.calculatePrice(from,to,route)}+'&#8377'"></h5>
+
+			<form action="/book-ticket" method="post">
+				<input type="hidden" name="from" th:value="${from}"> <input
+					type="hidden" name="to" th:value="${to}"> <input
+					type="hidden" name="routeId" th:value="${route.id}">
+				<button>Book</button>
+			</form>
+
+		</div>
+		<a href="/book-bus"><button>Back</button></a>
+	</div>
+	<th:block th:insert="~{fragments/footer.html}"></th:block>
+</body>
+</html>

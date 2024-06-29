@@ -1,5 +1,7 @@
 package com.bluebus.bus_project.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -51,5 +53,22 @@ public class Blue_Bus_Controller {
 		session.removeAttribute("customer");
 		session.setAttribute("successMessage", "Logout Success");
 		return "redirect:/";
+	}
+
+	@GetMapping("/book-bus")
+	public String bookbus() {
+		return "bookbus";
+	}
+
+	@PostMapping("/bookbus")
+	public String bookbus(@RequestParam String from, @RequestParam String to, @RequestParam LocalDate date,
+			HttpSession httpSession, ModelMap map) {
+		return common_Service.bookbus(from, to, date, httpSession, map);
+	}
+
+	@PostMapping("/book-ticket")
+	public String bookTicket(@RequestParam String from, @RequestParam String to, @RequestParam int routeId,
+			HttpSession session, ModelMap map) {
+		return common_Service.bookTicket(from, to, routeId, session, map);
 	}
 }

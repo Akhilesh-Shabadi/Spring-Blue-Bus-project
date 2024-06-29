@@ -2,42 +2,43 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>BlueBus-Add Route</title>
+<title>BlueBus-Edit Route</title>
 <th:block th:insert="~{fragments/header.html}"></th:block>
-<link rel="stylesheet" href="/css/add-route.css">
+<link rel="stylesheet" href="/css/edit-route.css">
 </head>
 <body>
 	<div>
 		<th:block th:insert="~{fragments/navbar.html}"></th:block>
 		<th:block th:insert="~{fragments/message.html}"></th:block>
 	</div>
-	<div class="container">
-		<form action="/agency/add-route" method="post">
-
-			<div class="from-addroute">
-				<label>Select Bus</label> 
-				<select name="bus.id" required="required">
-					<option selected="selected" disabled="disabled">Select One Bus</option>
-					<option th:each="bus:${buses}" th:value="${bus.id}" th:text="${bus.name}"></option>
+	<div>
+		<form action="/agency/edit-route" method="post">
+			<div>
+				<label>Select Bus</label> <select name="bus.id" required="required">
+					<option selected="selected" disabled="disabled">Select One
+						Bus</option>
+					<option th:each="bus:${buses}" th:value="${bus.id}"
+						th:text="${bus.name}"></option>
 				</select>
 			</div>
 
-			<div id="stations" class="from-addroute">
-				<div class="station-from">
-					<label>From:</label><br> 
-					<input type="text" placeholder="Enter Source Station" name="stations[0].name">
+			<div id="stations">
+				<div>
+					<label>From:</label><br> <input type="text"
+						placeholder="Enter Source Station" name="stations[0].name">
 					<input type="time" name="stations[0].time">
 				</div>
-				<div class="station-to">
-					<label>To:</label><br> 
-					<input type="text" name="stations[1].name" placeholder="Enter Station"> 
-					<input type="text" name="stations[1].price" placeholder="Enter Ticket Price"> 
-					<input type="time" name="stations[1].time">
+				<div>
+					<label>To:</label><br> <input type="text"
+						name="stations[1].name" placeholder="Enter Station"> <input
+						type="text" name="stations[1].price"
+						placeholder="Enter Ticket Price"> <input type="time"
+						name="stations[1].time">
 				</div>
 			</div>
 			<button type="button" onclick="addStation()">Add Station</button>
 
-			<div class="from-addroute">
+			<div>
 				<label>Select Days : </label> 
 				<input type="checkbox" name="monday" value="true" id="mon"> <label for="mon">Monday</label>
 				<input type="checkbox" name="tuesday" value="true" id="tue"> <label for="tue">TuesDay</label>
@@ -47,12 +48,11 @@
 				<input type="checkbox" name="saturday" value="true" id="sat"> <label for="sat">Saturday</label>
 				<input type="checkbox" name="sunday" value="true" id="sun"> <label for="sun">Sunday</label>
 			</div>
-
 			<a href="/"><button type="button">Back</button></a>
 			<button>Add Route</button>
 		</form>
 	</div>
 	<th:block th:insert="~{fragments/footer.html}"></th:block>
-	<script type="text/javascript" src="/js/add-route.js"></script>
+	<script type="text/javascript" src="/js/edit-route.js"></script>
 </body>
 </html>

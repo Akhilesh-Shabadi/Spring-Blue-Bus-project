@@ -18,6 +18,7 @@ import com.bluebus.bus_project.dao.Customer_Dao;
 import com.bluebus.bus_project.dto.Agency;
 import com.bluebus.bus_project.dto.Bus;
 import com.bluebus.bus_project.dto.Route;
+import com.bluebus.bus_project.dto.Station;
 import com.bluebus.bus_project.helper.AES;
 import com.bluebus.bus_project.helper.MailSending;
 import com.bluebus.bus_project.repository.Bus_Repository;
@@ -113,7 +114,7 @@ public class Agency_Service {
 	public String addToCloudinary(MultipartFile image) {
 		Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap("cloud_name", "dvx4er6bo", "api_key",
 				"425547426345111", "api_secret", "hIGse_HSel3hGCCMlToxpBKD_98", "secure", true));
-		Map resume = null;
+		Map<?, ?> resume = null;
 		try {
 			Map<String, Object> uploadOptions = new HashMap<String, Object>();
 			uploadOptions.put("folder", "Bus");
@@ -136,7 +137,7 @@ public class Agency_Service {
 				return "redirect:/";
 			} else {
 				map.put("buses", buses);
-				return "add-route.html";
+				return "add-route";
 			}
 		}
 	}
@@ -148,11 +149,15 @@ public class Agency_Service {
 			return "redirect:/";
 		} else {
 			Bus bus = busRepository.findById(route.getBus().getId()).orElse(null);
+			for (Station station : route.getStations()) {
+				station.setRoute(route);
+			}
 			route.setBus(bus);
 			route.setAgency(agency);
 			routeRepository.save(route);
 			bus.getRoutes().add(route);
 			busRepository.save(bus);
+			session.setAttribute("agency", agencyDao.findById(agency.getId()));
 			session.setAttribute("successMessage", "Route Added Success");
 			return "redirect:/";
 		}
@@ -176,7 +181,7 @@ public class Agency_Service {
 					return "redirect:/";
 				} else {
 					map.put("routes", routes);
-					return "fetch-route.html";
+					return "fetch-route";
 				}
 			}
 		}
@@ -188,7 +193,18 @@ public class Agency_Service {
 			session.setAttribute("failMessage", "Invalid Session");
 			return "redirect:/";
 		} else {
-			routeRepository.deleteById(id);
+			Bus bus = routeRepository.findById(id).orElseThrow().getBus();
+			Route route = null;
+			for (Route route1 : bus.getRoutes()) {
+				if (route1.getId() == id) {
+					route = route1;
+					break;
+				}
+			}
+			bus.getRoutes().remove(route);
+			busRepository.save(bus);
+			routeRepository.delete(route);
+			session.setAttribute("agency", agencyDao.findById(agency.getId()));
 			session.setAttribute("successMessage", "Route Removed Success");
 			return "redirect:/agency/manage-route";
 		}
@@ -202,7 +218,80 @@ public class Agency_Service {
 		} else {
 			Route route = routeRepository.findById(id).orElseThrow();
 			map.put("route", route);
-			return "edit-route.html";
+			return "edit-route";
+		}
+	}
+
+	public String fetchBus(HttpSession session, ModelMap map) {
+		Agency agency = (Agency) session.getAttribute("agency");
+		if (agency == null) {
+			session.setAttribute("failMessage", "Invalid Session");
+			return "redirect:/";
+		} else {
+			List<Bus> buses = agency.getBuses();
+			if (buses.isEmpty()) {
+				session.setAttribute("failMessage", "No Bus Added Yet");
+				return "redirect:/";
+			} else {
+				map.put("buses", buses);
+				return "fetch-bus";
+			}
+		}
+	}
+
+	public String deleteBus(int id, HttpSession session) {
+		Agency agency = (Agency) session.getAttribute("agency");
+		if (agency == null) {
+			session.setAttribute("failMessage", "Invalid Session");
+			return "redirect:/";
+		} else {
+			Bus bus = null;
+			for (Bus bus1 : agency.getBuses()) {
+				if (bus1.getId() == id) {
+					bus = bus1;
+					break;
+				}
+			}
+			agency.getBuses().remove(bus);
+			agencyDao.save(agency);
+			busRepository.delete(bus);
+			session.setAttribute("agency", agencyDao.findById(agency.getId()));
+			session.setAttribute("successMessage", "Bus Removed Success");
+			return "redirect:/agency/manage-bus";
+		}
+	}
+
+	public String editBus(int id, HttpSession session, ModelMap map) {
+		Agency agency = (Agency) session.getAttribute("agency");
+		if (agency == null) {
+			session.setAttribute("failMessage", "Invalid Session");
+			return "redirect:/";
+		} else {
+			Bus bus = busRepository.findById(id).orElseThrow();
+			map.put("bus", bus);
+			return "edit-bus";
+		}
+	}
+
+	public String editBus(Bus bus, MultipartFile image, HttpSession session) {
+		Agency agency = (Agency) session.getAttribute("agency");
+		if (agency == null) {
+			session.setAttribute("failMessage", "Invalid Session");
+			return "redirect:/";
+		} else {
+			try {
+				if (image.getInputStream().available() != 0) {
+					bus.setImageLink(addToCloudinary(image));
+				} else {
+					bus.setImageLink(busRepository.findById(bus.getId()).orElseThrow().getImageLink());
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			busRepository.save(bus);
+			session.setAttribute("agency", agencyDao.findById(agency.getId()));
+			session.setAttribute("successMessage", "Bus Updated Success");
+			return "redirect:/agency/manage-bus";
 		}
 	}
 }

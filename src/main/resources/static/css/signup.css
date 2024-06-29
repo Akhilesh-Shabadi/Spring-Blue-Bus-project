@@ -79,6 +79,8 @@ body {
 	max-width: 400px;
 	width: 100%;
 	text-align: center;
+	position: relative;
+	top:20%;
 }
 
 .container h1 {

@@ -94,10 +94,12 @@ body {
     background: rgba(255, 255, 255, 0.9); /* White with transparency */
     padding: 40px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
     max-width: 600px;
     width: 100%;
     text-align: left;
+    position: relative;
+    top: 20px;
 }
 
 .container h1 {
