@@ -65,7 +65,7 @@ public class Agency_Controller {
 	public String addbus(Bus bus, @RequestParam MultipartFile image, HttpSession session) {
 		return agencyService.addBus(bus, image, session);
 	}
-	
+
 	@GetMapping("/add-route")
 	public String addRoute(HttpSession session, ModelMap map) {
 		return agencyService.addRoute(session, map);
@@ -80,34 +80,34 @@ public class Agency_Controller {
 	public String manageRoute(HttpSession session, ModelMap map) {
 		return agencyService.fetchRoutes(session, map);
 	}
-	
+
 	@GetMapping("/delete-route/{id}")
 	public String deleteRoute(@PathVariable int id, HttpSession session) {
 		return agencyService.deleteRoute(id, session);
 	}
-	
+
 	@GetMapping("/edit-route/{id}")
-	public String editRoute(@PathVariable int id, HttpSession session,ModelMap map) {
-		return agencyService.editRoute(id, session,map);
+	public String editRoute(@PathVariable int id, HttpSession session, ModelMap map) {
+		return agencyService.editRoute(id, session, map);
 	}
-	
+
 	@GetMapping("/manage-bus")
 	public String manageBus(HttpSession session, ModelMap map) {
 		return agencyService.fetchBus(session, map);
 	}
-	
+
 	@GetMapping("/delete-bus/{id}")
 	public String deleteBus(@PathVariable int id, HttpSession session) {
 		return agencyService.deleteBus(id, session);
 	}
-	
+
 	@GetMapping("/edit-bus/{id}")
-	public String editBus(@PathVariable int id, HttpSession session,ModelMap map) {
-		return agencyService.editBus(id, session,map);
+	public String editBus(@PathVariable int id, HttpSession session, ModelMap map) {
+		return agencyService.editBus(id, session, map);
 	}
-	
+
 	@PostMapping("/edit-bus")
-	public String editBus(Bus bus, @RequestParam MultipartFile image,HttpSession session) {
-		return agencyService.editBus(bus,image,session);
+	public String editBus(Bus bus, @RequestParam MultipartFile image, HttpSession session) {
+		return agencyService.editBus(bus, image, session);
 	}
 }

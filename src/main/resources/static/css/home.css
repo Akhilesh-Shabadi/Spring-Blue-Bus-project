@@ -76,80 +76,79 @@ nav button:hover {
 	text-align: center;
 } */
 
-
 /* General Styles */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f0f4f8; /* Light background color */
-    color: #333;
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background: #f0f4f8; /* Light background color */
+	color: #333;
 }
 
 .hero {
-    background: url("/images/bluebus.jpeg") no-repeat center center; /* Adjust path as needed */
-    background-size: cover;
-    filter: opacity(0.8); /* Blur and low opacity */
-    color: white;
-    height: 100vh;
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
+    /* background: url("/images/bluebus.jpeg") no-repeat center center; */ /* Adjust path as needed */
+    /* background-size: cover; */
+    /* filter: opacity(0.8); */ /* Blur and low opacity */
+    /* color: white; */
+    /* height: 100vh; */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     position: relative;
     overflow: hidden;
 }
 
-.hero::before {
+/* .hero::before {
     content: '';
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    background: rgba(0, 0, 0, 0.3); /* Dark overlay for readability */
-}
-
+    background: rgba(0, 0, 0, 0.3); Dark overlay for readability
+} */
 .hero-content {
-    position: relative;
-    text-align: center;
-    z-index: 1;
-    top: 50px;
+	position: relative;
+	text-align: center;
+	z-index: 1;
+	top: 50px;
 }
 
 .hero h1 {
-    font-size: 3rem;
-    margin: 0;
+	font-size: 3rem;
+	margin: 0;
 }
 
 .hero p {
-    font-size: 1.5rem;
-    margin: 10px 0;
+	font-size: 1.5rem;
+	margin: 10px 0;
 }
 
 .content {
-    padding: 2rem;
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-    /* background: white; */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    border-radius: 10px;
-    position: relative;
-    bottom: -220px;
+	padding: 2rem;
+	max-width: 800px;
+	margin: 0 auto;
+	text-align: center;
+	/* background: white; */
+	/* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+	/* Subtle shadow for depth */
+	/* border-radius: 10px; */
+	position: relative;
+	bottom: -220px;
 }
 
 .content h2 {
-    font-size: 2rem;
-    margin-bottom: 10px;
+	font-size: 2rem;
+	margin-bottom: 10px;
 }
 
 .content p {
-    font-size: 1.2rem;
-    line-height: 1.6;
-    margin-bottom: 20px;
+	font-size: 1.2rem;
+	line-height: 1.6;
+	margin-bottom: 20px;
 }
 
 /* Scrollbar styling */
 ::-webkit-scrollbar {
-    width: 0; /* Hide scrollbar but keep it functional */
+	width: 0; /* Hide scrollbar but keep it functional */
 }

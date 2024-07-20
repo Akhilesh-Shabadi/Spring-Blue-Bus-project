@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
@@ -11,22 +11,22 @@
 		<th:block th:insert="~{fragments/navbar.html}"></th:block>
 		<th:block th:insert="~{fragments/message.html}"></th:block>
 	</div>
-	<div>
-		<form action="/agency/edit-route" method="post">
+	<div class="container">
+		<form action="/agency/edit-route" method="post" th:object="${route}">
+		<input type="hidden" name="id" th:field="*{id}">
 			<div>
 				<label>Select Bus</label> <select name="bus.id" required="required">
-					<option selected="selected" disabled="disabled">Select One
+					<option selected="selected" disabled="disabled" >Select One
 						Bus</option>
-					<option th:each="bus:${buses}" th:value="${bus.id}"
-						th:text="${bus.name}"></option>
+					<option th:each="bus:${buses}" th:value="${bus.id}" th:field="*{bus.name}"></option>
 				</select>
 			</div>
 
 			<div id="stations">
 				<div>
 					<label>From:</label><br> <input type="text"
-						placeholder="Enter Source Station" name="stations[0].name">
-					<input type="time" name="stations[0].time">
+						placeholder="Enter Source Station" >
+					<input type="time">
 				</div>
 				<div>
 					<label>To:</label><br> <input type="text"
@@ -40,19 +40,79 @@
 
 			<div>
 				<label>Select Days : </label> 
-				<input type="checkbox" name="monday" value="true" id="mon"> <label for="mon">Monday</label>
-				<input type="checkbox" name="tuesday" value="true" id="tue"> <label for="tue">TuesDay</label>
-				<input type="checkbox" name="wednesday" value="true" id="wed"> <label for="wed">Wednesday</label>
-				<input type="checkbox" name="thursday" value="true" id="thu"> <label for="thu">Thursday</label>
-				<input type="checkbox" name="friday" value="true" id="fri"> <label for="fri">Friday</label>
-				<input type="checkbox" name="saturday" value="true" id="sat"> <label for="sat">Saturday</label>
-				<input type="checkbox" name="sunday" value="true" id="sun"> <label for="sun">Sunday</label>
+				<input type="checkbox" name="monday" value="true" id="mon" th:field="*{monday}"> <label for="mon">Monday</label>
+				<input type="checkbox" name="tuesday" value="true" id="tue" th:field="*{tuesday}"> <label for="tue">TuesDay</label>
+				<input type="checkbox" name="wednesday" value="true" id="wed" th:field="*{wednesday}"> <label for="wed">Wednesday</label>
+				<input type="checkbox" name="thursday" value="true" id="thu"th:field="*{thursday}"> <label for="thu">Thursday</label>
+				<input type="checkbox" name="friday" value="true" id="fri" th:field="*{friday}"> <label for="fri">Friday</label>
+				<input type="checkbox" name="saturday" value="true" id="sat" th:field="*{saturday}"> <label for="sat">Saturday</label>
+				<input type="checkbox" name="sunday" value="true" id="sun" th:field="*{sunday}"> <label for="sun">Sunday</label>
 			</div>
 			<a href="/"><button type="button">Back</button></a>
-			<button>Add Route</button>
+			<button>Update Route</button>
 		</form>
 	</div>
 	<th:block th:insert="~{fragments/footer.html}"></th:block>
 	<script type="text/javascript" src="/js/edit-route.js"></script>
 </body>
 </html>
+ -->
+ 
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BlueBus - Edit Route</title>
+    <th:block th:insert="~{fragments/header.html}"></th:block>
+    <link rel="stylesheet" href="/css/edit-route.css">
+</head>
+<body>
+    <div>
+        <th:block th:insert="~{fragments/navbar.html}"></th:block>
+        <th:block th:insert="~{fragments/message.html}"></th:block>
+    </div>
+    <div class="container">
+        <form action="/agency/edit-route" method="post" th:object="${route}">
+            <input type="hidden" name="id" th:field="*{id}">
+            <div>
+                <label>Select Bus</label>
+                <select name="bus.id" required="required" th:field="*{bus.id}">
+                    <option selected="selected" disabled="disabled">Select One Bus</option>
+                    <option th:each="bus : ${buses}" th:value="${bus.id}" th:text="${bus.name}"></option>
+                </select>
+            </div>
+
+            <div id="stations">
+                <div>
+                    <label>From:</label><br>
+                    <input type="text" placeholder="Enter Source Station" th:field="*{stations[0].name}">
+                    <input type="time" th:field="*{stations[0].time}">
+                </div>
+                <div th:each="station, iterStat : ${route.stations}">
+                    <label th:if="${iterStat.index > 0}">To:</label><br th:if="${iterStat.index > 0}">
+                    <input type="text" name="stations[${iterStat.index}].name" placeholder="Enter Station" th:field="*{stations[${iterStat.index}].name}" th:if="${iterStat.index > 0}">
+                    <input type="text" name="stations[${iterStat.index}].price" placeholder="Enter Ticket Price" th:field="*{stations[${iterStat.index}].price}" th:if="${iterStat.index > 0}">
+                    <input type="time" name="stations[${iterStat.index}].time" th:field="*{stations[${iterStat.index}].time}" th:if="${iterStat.index > 0}">
+                </div>
+            </div>
+            <button type="button" onclick="addStation()">Add Station</button>
+
+            <div>
+                <label>Select Days: </label>
+                <input type="checkbox" name="monday" value="true" id="mon" th:field="*{monday}"> <label for="mon">Monday</label>
+                <input type="checkbox" name="tuesday" value="true" id="tue" th:field="*{tuesday}"> <label for="tue">Tuesday</label>
+                <input type="checkbox" name="wednesday" value="true" id="wed" th:field="*{wednesday}"> <label for="wed">Wednesday</label>
+                <input type="checkbox" name="thursday" value="true" id="thu" th:field="*{thursday}"> <label for="thu">Thursday</label>
+                <input type="checkbox" name="friday" value="true" id="fri" th:field="*{friday}"> <label for="fri">Friday</label>
+                <input type="checkbox" name="saturday" value="true" id="sat" th:field="*{saturday}"> <label for="sat">Saturday</label>
+                <input type="checkbox" name="sunday" value="true" id="sun" th:field="*{sunday}"> <label for="sun">Sunday</label>
+            </div>
+            <a href="/"><button type="button">Back</button></a>
+            <button type="submit">Update Route</button>
+        </form>
+    </div>
+    <th:block th:insert="~{fragments/footer.html}"></th:block>
+    <script type="text/javascript" src="/js/edit-route.js"></script>
+</body>
+</html>
+ 

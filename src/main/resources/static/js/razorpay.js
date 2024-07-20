@@ -2,11 +2,11 @@ var options = {
 	"key": /*[[${key}]]*/,
 	"amount": /*[[${tripOrder.amount*100}]]*/,
 	"currency": "INR",
-	"name": "WhiteBus.com",
+	"name": "BlueBus.com",
 	"description": "Ticket Booking",
 	"image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRztzdOgtuHMLzwdKqtVJ0TP-xgb7sV-DSW9A&s",
 	"order_id": /*[[${tripOrder.orderId}]]*/,
-	"callback_url": "/",
+	"callback_url": "/confirm-order/[[${tripOrder.id}]]",
 	"prefill": {
 		"name": /*[[${customer.name}]]*/,
 		"email": /*[[${customer.email}]]*/,

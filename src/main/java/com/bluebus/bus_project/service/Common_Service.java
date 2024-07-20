@@ -12,14 +12,18 @@ import org.springframework.ui.ModelMap;
 import com.bluebus.bus_project.dao.Agency_Dao;
 import com.bluebus.bus_project.dao.Customer_Dao;
 import com.bluebus.bus_project.dto.Agency;
+import com.bluebus.bus_project.dto.Bus;
 import com.bluebus.bus_project.dto.Customer;
 import com.bluebus.bus_project.dto.Route;
 import com.bluebus.bus_project.dto.Station;
 import com.bluebus.bus_project.dto.TripOrder;
 import com.bluebus.bus_project.helper.AES;
 import com.bluebus.bus_project.helper.Calculator;
+import com.bluebus.bus_project.repository.Bus_Repository;
+import com.bluebus.bus_project.repository.Customer_Repository;
 import com.bluebus.bus_project.repository.Route_Repository;
 import com.bluebus.bus_project.repository.Station_Repository;
+import com.bluebus.bus_project.repository.TripOrder_Repository;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
@@ -42,6 +46,15 @@ public class Common_Service {
 
 	@Autowired
 	Calculator calculator;
+
+	@Autowired
+	Bus_Repository busRepository;
+
+	@Autowired
+	TripOrder_Repository orderRepository;
+
+	@Autowired
+	Customer_Repository customerRepository;
 
 	public String signup(String role) {
 		if (role.equals("customer"))
@@ -88,10 +101,10 @@ public class Common_Service {
 		}
 	}
 
-	public String bookbus(String from, String to, LocalDate date, HttpSession httpSession, ModelMap map) {
-		System.out.println(date.getDayOfWeek().toString().toLowerCase());
-		return null;
-	}
+//	public String bookbus(String from, String to, LocalDate date, HttpSession httpSession, ModelMap map) {
+//		System.out.println(date.getDayOfWeek().toString().toLowerCase());
+//		return null;
+//	}
 
 	public String searchBus(String from, String to, LocalDate date, HttpSession session, ModelMap map) {
 		if (!from.equalsIgnoreCase(to)) {
@@ -143,7 +156,6 @@ public class Common_Service {
 										routes.add(route);
 									break;
 								}
-
 								default:
 									throw new IllegalArgumentException("Unexpected value: " + day);
 								}
@@ -172,45 +184,76 @@ public class Common_Service {
 		}
 	}
 
-	public String bookTicket(String from, String to, int routeId, HttpSession session, ModelMap map) {
+	public String bookTicket(String from, String to, int routeId, HttpSession session, ModelMap map, int seat) {
 		Customer customer = (Customer) session.getAttribute("customer");
 		if (customer == null) {
 			session.setAttribute("failMessage", "First Login to Book");
-			return "redirect:/customer/login";
+			return "redirect:/login";
 		} else {
 			Route route = routeRepository.findById(routeId).orElseThrow();
-			double price = calculator.calculatePrice(from, to, route);
-			RazorpayClient razorpay = null;
-			try {
-				razorpay = new RazorpayClient("rzp_test_f4vcAPoh0RDZf", "jjblWSJ6F7NJuPUOtNmDjg4i");
-				JSONObject orderRequest = new JSONObject();
-				orderRequest.put("amount", price * 100);
-				orderRequest.put("currency", "INR");
+			Bus bus = route.getBus();
+			if (bus.getSeat() >= seat) {
+				double price = calculator.calculatePrice(from, to, route) * seat;
+				RazorpayClient razorpay = null;
+				try {
+					razorpay = new RazorpayClient("rzp_test_f4vcAPoh0RDZfi", "jjblWSJ6F7NJuPUOtNmDjg4i");
+					JSONObject orderRequest = new JSONObject();
+					orderRequest.put("amount", price * 100);
+					orderRequest.put("currency", "INR");
 
-				Order order = razorpay.orders.create(orderRequest);
+					Order order = razorpay.orders.create(orderRequest);
 
-				TripOrder tripOrder = new TripOrder();
-				tripOrder.setFrom(from);
-				tripOrder.setTo(to);
-				tripOrder.setAmount(price);
-				tripOrder.setBookingDate(LocalDate.now());
-				tripOrder.setArrivalTime(calculator.timeCalculator(to, route));
-				tripOrder.setDepartureTime(calculator.timeCalculator(from, route));
-				tripOrder.setOrderId(order.get("id"));
+					TripOrder tripOrder = new TripOrder();
+					tripOrder.setFrom(from);
+					tripOrder.setTo(to);
+					tripOrder.setAmount(price);
+					tripOrder.setBookingDate(LocalDate.now());
+					tripOrder.setArrivalTime(calculator.timeCalculator(to, route));
+					tripOrder.setDepartureTime(calculator.timeCalculator(from, route));
+					tripOrder.setOrderId(order.get("id"));
+					tripOrder.setSeat(seat);
+					tripOrder.setBusId(bus.getId());
 
-				customer.getTripOrders().add(tripOrder);
-				customer_Dao.save(customer);
+					orderRepository.save(tripOrder);
 
-				map.put("tripOrder", tripOrder);
-				map.put("key", "rzp_test_f4vcAPoh0RDZf");
-				map.put("customer", customer);
-				session.setAttribute("successMessage", "Check Details and Do Payment");
-				return "razorpay";
+					customer.getTripOrders().add(tripOrder);
+					customer_Dao.save(customer);
 
-			} catch (RazorpayException e) {
-				session.setAttribute("failMessage", "Payment Failed");
+					map.put("tripOrder", tripOrder);
+					map.put("key", "rzp_test_f4vcAPoh0RDZfi");
+					map.put("customer", customer);
+					session.setAttribute("customer", customerRepository.findById(customer.getId()).orElseThrow());
+					session.setAttribute("successMessage", "Check Details and Do Payment");
+					return "razorpay";
+				} catch (RazorpayException e) {
+					e.printStackTrace();
+					session.setAttribute("failMessage", "Payment Failed");
+					return "redirect:/";
+				}
+			} else {
+				session.setAttribute("failMessage", "Sorry! Tickets are Not Available");
 				return "redirect:/";
 			}
+		}
+	}
+
+	public String confirmOrder(int id, String razorpay_payment_id, HttpSession session) {
+		Customer customer = (Customer) session.getAttribute("customer");
+		if (customer == null) {
+			session.setAttribute("failMessage", "First Login to Book");
+			return "redirect:/login";
+		} else {
+			TripOrder order = orderRepository.findById(id).orElseThrow();
+			order.setPaymentId(razorpay_payment_id);
+			orderRepository.save(order);
+
+			Bus bus = busRepository.findById(order.getBusId()).orElseThrow();
+			bus.setSeat(bus.getSeat() - order.getSeat());
+
+			busRepository.save(bus);
+
+			session.setAttribute("successMessage", "Ticket booked Successfully");
+			return "redirect:/";
 		}
 	}
 }

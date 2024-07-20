@@ -1,14 +1,17 @@
 package com.bluebus.bus_project.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 
 import com.bluebus.bus_project.dao.Customer_Dao;
 import com.bluebus.bus_project.dto.Customer;
+import com.bluebus.bus_project.dto.TripOrder;
 import com.bluebus.bus_project.helper.AES;
 import com.bluebus.bus_project.helper.MailSending;
 
@@ -47,6 +50,7 @@ public class Customer_Service {
 				session.setAttribute("successMessage", "Otp Sent Success");
 				return "redirect:/customer/send-otp/" + customer.getId() + "";
 			} else {
+				session.setAttribute("failMessage", "Sorry Not able to send OTP");
 				return "redirect:/customer/signup";
 			}
 		}
@@ -75,6 +79,23 @@ public class Customer_Service {
 		} else {
 			session.setAttribute("failMessage", "Failed to Send Otp");
 			return "redirect:/customer/send-otp/" + customer.getId() + "";
+		}
+	}
+
+	public String viewbookings(HttpSession session, ModelMap map) {
+		Customer customer = (Customer) session.getAttribute("customer");
+		if (customer == null) {
+			session.setAttribute("failMessage", "First Login to Book");
+			return "redirect:/login";
+		} else {
+			List<TripOrder> orders = customer.getTripOrders();
+			if (orders.isEmpty()) {
+				session.setAttribute("failMessage", "No Bookings Yet");
+				return "redirect:/";
+			} else {
+				map.put("orders", orders);
+				return "view-bookings";
+			}
 		}
 	}
 }

@@ -13,14 +13,13 @@ public class Calculator {
 		double fromPrice = 0;
 		double toPrice = 0;
 		for (Station station : route.getStations()) {
-			if (station.getName().equals(from)) {
+			if (station.getName().equalsIgnoreCase(from)) {
 				fromPrice = station.getPrice();
 			}
-			if (station.getName().equals(to)) {
+			if (station.getName().equalsIgnoreCase(to)) {
 				toPrice = station.getPrice();
 			}
 		}
-
 		return toPrice - fromPrice;
 	}
 

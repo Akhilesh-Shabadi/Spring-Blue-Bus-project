@@ -24,7 +24,7 @@ public class Bus {
 	private int seat;
 	private String regno;
 	private String imageLink;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	List<Route> routes=new ArrayList<Route>();
+	List<Route> routes = new ArrayList<Route>();
 }

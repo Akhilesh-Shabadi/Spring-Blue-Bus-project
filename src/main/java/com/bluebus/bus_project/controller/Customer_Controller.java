@@ -51,4 +51,9 @@ public class Customer_Controller {
 	public String resendOtp(@PathVariable int id, HttpSession session) {
 		return customer_Service.resendOtp(id, session);
 	}
+
+	@GetMapping("/view-bookings")
+	public String viewPastBookings(HttpSession session, ModelMap map) {
+		return customer_Service.viewbookings(session, map);
+	}
 }

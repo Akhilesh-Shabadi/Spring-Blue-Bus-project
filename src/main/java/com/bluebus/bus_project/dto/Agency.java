@@ -50,7 +50,7 @@ public class Agency {
 	private String pan_no;
 	private int otp;
 	private boolean status;
-	
+
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	List<Bus> buses = new ArrayList<Bus>();
 }

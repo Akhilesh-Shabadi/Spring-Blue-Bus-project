@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>BlueBus-view past booking</title>
+<th:block th:insert="~{fragments/header.html}"></th:block>
+<link rel="stylesheet" href="/css/view-bookings.css">
+</head>
+<body>
+	<div>
+		<th:block th:insert="~{fragments/navbar.html}"></th:block>
+		<th:block th:insert="~{fragments/message.html}"></th:block>
+	</div>
+	<div class="container">
+		<div class="card" th:each="order:${orders}">
+			<h3 th:text="${order.from}+' '+${order.departureTime}+' To '+${order.to}+' '+${order.arrivalTime}"></h3>
+			<h3 th:text="${order.amount}+'&#8377'"></h3>
+			<h3 th:text="${order.seat}"></h3>
+			<h3 th:text="${order.orderId}"></h3>
+			<h3 th:text="${order.paymentId}"></h3>
+		</div>
+
+	</div>
+	<a href="/book-bus"><button>Back</button></a>
+	<th:block th:insert="~{fragments/footer.html}"></th:block>
+</body>
+</html>
