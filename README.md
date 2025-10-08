@@ -26,3 +26,30 @@ A Spring Boot-based web application designed to manage bus transportation servic
 1. Clone the repository:
    ```bash
    git clone https://github.com/Akhilesh-Shabadi/Spring-Blue-Bus-project.git
+
+2. Navigate to the project directory:
+- **cd Spring-Blue-Bus-project**
+
+3. - Build the project using Maven:
+- **mvn clean install**
+
+4. Run the application:
+- **mvn spring-boot:run**
+
+5. Access the application at:
+- **http://localhost:8080**
+
+## 🧪 Testing
+- Unit and integration tests can be run using:
+- **mvn test**
+
+## 📁 Project Structure
+src/
+├── main/
+│   ├── java/
+│   │   └── com/bluebus/...
+│   └── resources/
+│       ├── application.properties
+│       └── templates/
+├── test/
+│   └── java/
